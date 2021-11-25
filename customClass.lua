@@ -1,5 +1,4 @@
 local function mainSuper (self, parent, parentConstr, current, method, ...)
-    --print(self, parent, current, method)
     if method == "constructor" then
         return parentConstr(current, ...)
     end
@@ -20,10 +19,6 @@ local function mainClass(name, pCls)
         parent = pCls.parent;
         parentConstr = pCls.constr;
     end
-
-    --function cls:super(method, ...) -- needs work, stack overflow when doubling the calls
-    --    return mainSuper(self, parent, parentConstr, cls, method, ...)
-    --end
 
     local clsConstr = false     -- the custom constructor
     -- The custom __name hack
@@ -85,7 +80,7 @@ local function mainClass(name, pCls)
             -- Slight hack to allow hidden constructor field, as well as setting canCallWithTbl false
             if self == cls then
                 if key == "super" or key == "extends" then
-                    print("ERROR: Can't overwrite [",key,"]!")
+                    error("ERROR: Can't overwrite [",key,"]!", 2)
                     return self
                 end
                 if string.lower(key) == "constructor" and type(value) == "function" then
